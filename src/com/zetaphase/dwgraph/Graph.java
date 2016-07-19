@@ -12,14 +12,33 @@ public class Graph<T>{
 
 	private Map<T, Node<T>> adjacencyList;
 	
+	private List<T> vertexList = new ArrayList<T>();
+	
 	public Graph(){
 		adjacencyList = new HashMap<>();
 	}
+	
+	public boolean isLoop(){
+		List<T> visited = new ArrayList<T>();
+		for (T vertex1 : vertexList){
+			for (T vertex2 : vertexList){
+				if (!visited.contains(vertex2)&&(vertex1!=vertex2)){
+					if ((shortestPath(vertex1, vertex2)!=null)&&(shortestPath(vertex2, vertex1)!=null)){
+						return true;
+					}
+				}
+			}
+			visited.add(vertex1);
+		}
+		return false;
+	}
+	
 	// add vertex to graph
 	public boolean addVertex(T vertex){
 		if (adjacencyList.containsKey(vertex)){
 			return false;
 		}
+		vertexList.add(vertex);
 		adjacencyList.put(vertex, new Node<>(vertex));
 		return true;
 	}
