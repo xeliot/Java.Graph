@@ -9,6 +9,7 @@ public class Node<T>{
 	private T vertex;
 	private List<Edge<T>> edges;
 	private Node<T> parent;
+	private List<Node<T>> parents = new ArrayList<Node<T>>();
 	private boolean isVisited;
 	
 	public Node(T vertex){
@@ -58,12 +59,24 @@ public class Node<T>{
 		return parent;
 	}
 	
+	public List<Node<T>> parents(){
+		return parents;
+	}
+	
+	public boolean noParents(){
+		return parents.isEmpty();
+	}
+	
 	public boolean isVisited(){
 		return isVisited;
 	}
 	
 	public void setVisited(boolean isVisited){
 		this.isVisited = isVisited;
+	}
+	
+	public void addParent(Node<T> parentNode){
+		parents.add(parentNode);
 	}
 	
 	public void setParent(Node<T> parent){

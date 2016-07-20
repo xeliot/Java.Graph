@@ -52,7 +52,9 @@ public class Graph<T>{
 			throw new RuntimeException("Vertex does not exist");
 		}
 		Node<T> node1 = getNode(vertex1);
-		Node<T> node2 = getNode(vertex2);;
+		Node<T> node2 = getNode(vertex2);
+		//node2.setParent(node1);
+		node2.addParent(node1);
 		return node1.addEdge(node2, weight);
 	}
 	//remove vertex from graph
@@ -142,6 +144,74 @@ public class Graph<T>{
 		}
 	}
 	
+	public boolean hasIsland(T startVertex){
+		if (!containsVertex(startVertex)){
+			throw new RuntimeException("Vertex does not exist.");
+		}
+		
+		resetGraph();
+		
+		Queue<Node<T>> queue = new LinkedList<>();
+		Node<T> start = getNode(startVertex);
+		queue.add(start);
+		vertexList.remove(start.vertex());
+
+		while (!queue.isEmpty()){
+			Node<T> first = queue.remove();
+			//System.out.println(first.vertex());
+			first.setVisited(true);
+			vertexList.remove(first.vertex());
+			if (!first.noParents()){
+				for(Node<T> parent: first.parents()){
+					if (!parent.isVisited()){
+						queue.add(parent);
+					}
+				}
+			}
+			for(Edge<T> edge : first.edges()){
+				Node<T> neighbor = edge.toNode();
+				if(!neighbor.isVisited()){
+					//neighbor.setParent(first);
+					queue.add(neighbor);
+					vertexList.remove(neighbor.vertex());
+				}
+			}
+		}
+		System.out.println(vertexList);
+		if(vertexList.isEmpty()){
+			return false;
+		}else{
+			return true;
+		}
+	}
+	
+	public boolean hasLoop(T startVertex){
+		if (!containsVertex(startVertex)){
+			throw new RuntimeException("Vertex does not exist.");
+		}
+		
+		resetGraph();
+		
+		Queue<Node<T>> queue = new LinkedList<>();
+		Node<T> start = getNode(startVertex);
+		queue.add(start);
+
+		while (!queue.isEmpty()){
+			Node<T> first = queue.remove();
+			first.setVisited(true);
+			for(Edge<T> edge : first.edges()){
+				Node<T> neighbor = edge.toNode();
+				if(!neighbor.isVisited()){
+					neighbor.setParent(first);
+					queue.add(neighbor);
+				}else{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	private Node<T> getNode(T value){
 		return adjacencyList.get(value);
 	}
@@ -163,13 +233,16 @@ public class Graph<T>{
 		graph.addVertex("E");
 		graph.addVertex("F");
 		graph.addEdge("A", "B");
-		graph.addEdge("B", "D");
-		graph.addEdge("A", "C");
-		graph.addEdge("C", "D");
-		graph.addEdge("C", "E");
-		graph.addEdge("F", "C");
-		graph.addEdge("F", "E");
-		System.out.println(graph.shortestPath("A", "E"));
+		graph.addEdge("B", "C");
+		graph.addEdge("D", "C");
+		graph.addEdge("D", "B");
+		graph.addEdge("D", "E");
+		graph.addEdge("C", "F");
+		graph.addEdge("E", "D");
+		graph.addEdge("D", "B");
+		//System.out.println(graph.shortestPath("A", "E"));
+		//System.out.println(graph.hasLoop("A"));
+		System.out.println(graph.hasIsland("A"));
 	}
 	
 }
