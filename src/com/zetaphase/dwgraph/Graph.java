@@ -226,6 +226,7 @@ public class Graph<T>{
 	
 	public static void main(String [] args){
 		Graph<String> graph = new Graph<String>();
+		/*
 		graph.addVertex("A");
 		graph.addVertex("B");
 		graph.addVertex("C");
@@ -234,12 +235,14 @@ public class Graph<T>{
 		graph.addVertex("F");
 		graph.addEdge("A", "B");
 		graph.addEdge("B", "C");
-		graph.addEdge("D", "C");
+		graph.addEdge("A", "D");
 		graph.addEdge("D", "B");
-		graph.addEdge("D", "E");
-		graph.addEdge("C", "F");
-		graph.addEdge("E", "D");
-		graph.addEdge("D", "B");
+		graph.addEdge("C", "D");
+		graph.addEdge("C", "A");
+		graph.addEdge("E", "F");
+		graph.addEdge("F", "E");
+		*/
+		graph.addVertex("A");
 		//System.out.println(graph.shortestPath("A", "E"));
 		//System.out.println(graph.hasLoop("A"));
 		System.out.println(graph.hasIsland("A"));
